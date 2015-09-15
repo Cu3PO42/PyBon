@@ -30,6 +30,8 @@ def compilePB(pyBonCode: str, verbosity=0) -> str:
         @type pyBonCode: str
         @type verbosity: int
     """
+    if verbosity is None:
+        verbosity = 0
     tokens = Lexer(pyBonCode).tokens()
     if verbosity > 1:
         print("Tokens:")

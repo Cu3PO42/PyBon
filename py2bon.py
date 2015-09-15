@@ -32,7 +32,7 @@ def main():
             if args.out:
                 outname = args.out
             else:
-                outname = os.path.join(os.path.basename(filename), re.search(r"(?:.*[/\\])?(.+)\..+?$", args.file).group(1)+".bon")
+                outname = os.path.join(os.path.dirname(filename), re.search(r"(?:.*[/\\])?(.+)\..+?$", args.file).group(1)+".bon")
             with open(outname, "w", newline="") as file:
                 file.write(bonProg)
         if args.print:
