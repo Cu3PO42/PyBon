@@ -10,6 +10,7 @@ from syntactic_analyzer import SyntacticAnalysis
 from semantic_analyzer import SemanticAnalysis
 from intermediate_code import IntermediateCode
 from optimizer import Optimizer
+from sys import stderr
 
 def compilePB(pyBonCode: str, verbosity=0) -> str:
     """Compile Python Bonsai code and return Bonsai code.
@@ -34,32 +35,32 @@ def compilePB(pyBonCode: str, verbosity=0) -> str:
         verbosity = 0
     tokens = Lexer(pyBonCode).tokens()
     if verbosity > 1:
-        print("Tokens:")
+        print("Tokens:", file=stderr)
         for token in tokens:
-            print(token)
-        print("")
+            print(token, file=stderr)
+        print("", file=stderr)
     ast = SyntacticAnalysis(tokens)
     SemanticAnalysis(ast)
     ic = IntermediateCode()
     ic.fromSyntaxTree(ast)
     if verbosity > 2:
-        print("Original instructions:")
+        print("Original instructions:", file=stderr)
         _print_instructions(ic)
-        print("\nSymbols:")
-        print(ic.symbolTable)
-        print("\nRegisters:")
-        print(ic.registers)
+        print("\nSymbols:", file=stderr)
+        print(ic.symbolTable, file=stderr)
+        print("\nRegisters:", file=stderr)
+        print(ic.registers, file=stderr)
     oc = Optimizer(ic)
     bonCode = oc.compile()
     if verbosity > 0:
-        print("\nOptimized instructions:")
+        print("\nOptimized instructions:", file=stderr)
         _print_instructions(oc)
-        print("\nSymbols:")
-        print(oc.symbolTable)
-        print("\nRegisters:")
-        print(oc.registers)
-        print("\nCompiled Bonsai code:")
-        print(bonCode)
+        print("\nSymbols:", file=stderr)
+        print(oc.symbolTable, file=stderr)
+        print("\nRegisters:", file=stderr)
+        print(oc.registers, file=stderr)
+        print("\nCompiled Bonsai code:", file=stderr)
+        print(bonCode, file=stderr)
     return bonCode
 
 def _print_instructions(ic):
@@ -93,5 +94,6 @@ def _print_instructions(ic):
     for i, instruction in enumerate(instructionStrings):
         print(
             labels.get(i, "").rjust(max_length),
-            instruction
+            instruction,
+            file=stderr
         )
